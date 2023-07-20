@@ -26,3 +26,50 @@ test("My first scenario", async () => {
     game.wasCorrectlyAnswered();
   });
 });
+
+describe("can play trivia game", () => {
+  test("can add players", async () => {
+    runGoldenMaster(async () => {
+      const game = new Game();
+      game.add("Mathieu");
+      game.add("Thomas");
+      game.add("Clément");
+    });
+  });
+
+  test("can roll dice and move to position 3", async () => {
+    runGoldenMaster(async () => {
+      const game = new Game();
+      game.add("Mathieu");
+      game.roll(3);
+    });
+  });
+
+  test("can roll dice and move to position 1 after making a whole round", async () => {
+    runGoldenMaster(async () => {
+      const game = new Game();
+      game.add("Mathieu");
+      game.roll(10);
+      game.roll(3);
+    });
+  });
+
+  test("can win after 6 correct answers", async () => {
+    runGoldenMaster(async () => {
+      const game = new Game();
+      game.add("Mathieu");
+      game.add("Thomas");
+      game.wasCorrectlyAnswered();
+      game.wrongAnswer()
+      game.wasCorrectlyAnswered();
+      game.wrongAnswer()
+      game.wasCorrectlyAnswered();
+      game.wrongAnswer()
+      game.wasCorrectlyAnswered();
+      game.wrongAnswer()
+      game.wasCorrectlyAnswered();
+      game.wrongAnswer()
+      game.wasCorrectlyAnswered();
+    });
+  });
+});
