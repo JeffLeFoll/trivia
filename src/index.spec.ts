@@ -37,7 +37,7 @@ describe("can play trivia game", () => {
     });
   });
 
-  test("can roll dice and move to position 3", async () => {
+  test("can roll dice and move to deprecatedGetPosition 3", async () => {
     runGoldenMaster(async () => {
       const game = new Game();
       game.add("Mathieu");
@@ -45,7 +45,7 @@ describe("can play trivia game", () => {
     });
   });
 
-  test("can roll dice and move to position 1 after making a whole round", async () => {
+  test("can roll dice and move to deprecatedGetPosition 1 after making a whole round", async () => {
     runGoldenMaster(async () => {
       const game = new Game();
       game.add("Mathieu");
@@ -54,7 +54,7 @@ describe("can play trivia game", () => {
     });
   });
 
-  test("can roll dice and move to position 1 after making a whole round when getting out of penalty box", async () => {
+  test("can roll dice and move to deprecatedGetPosition 1 after making a whole round when getting out of penalty box", async () => {
     runGoldenMaster(async () => {
       const game = new Game();
       game.add("Mathieu");

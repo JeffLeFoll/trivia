@@ -15,5 +15,8 @@ export class Board {
     return this.categories[positionModulo]
   }
 
+  computePosition(current: number, delta: number) {
+    return (current + delta) % 12
+  }
 
 }
