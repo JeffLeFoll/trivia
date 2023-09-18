@@ -1,11 +1,13 @@
 import { Board } from "./Board";
+import { Questions } from "./Questions";
 
 export class Player {
-  private readonly name: string;
+  protected readonly name: string;
   private purse: number
-  private place: number
-  private board: Board
+  protected place: number
+  protected board: Board
   private isInPenaltyBox: boolean
+  protected isGettingOutOfPenaltyBox: boolean = false;
 
   constructor(name: string, board: Board) {
     this.name = name;
@@ -23,7 +25,10 @@ export class Player {
   }
 
   isWinning() {
-    return this.purse == 6
+    const isWinning =  this.purse == 6
+    console.log(`Player ${this.name} is winning: ${isWinning}`)
+
+    return isWinning;
   }
 
   move(roll: number) {
@@ -32,19 +37,72 @@ export class Player {
     console.log(`Player ${this.name} is now in position ${this.place} after roll ${roll}`);
   }
 
-  deprecatedGetPosition() {
-    return this.place;
-  }
-
-  deprecatedIsInPenaltyBox() {
-    return this.isInPenaltyBox
-  }
-
   moveToPenaltyBox() {
     this.isInPenaltyBox = true
   }
 
   moveOutOfPenaltyBox() {
     this.isInPenaltyBox = false
+  }
+
+  roll(questions: Questions, roll: number){
+    console.log(`Roll: ${roll}`)
+
+    if(this.isInPenaltyBox){
+      console.log(`Player ${this.name} is in penalty box`)
+
+      if (roll % 2 != 0) {
+        console.log(`Player ${this.name} is getting out of penalty box`)
+
+        this.isGettingOutOfPenaltyBox = true;
+
+        this.move(roll);
+
+        questions.askQuestion(this.board.getCategory(this.place));
+
+      } else {
+        console.log(`Player ${this.name} is not getting out of penalty box`)
+        this.isGettingOutOfPenaltyBox = false
+      }
+    } else {
+      console.log(`Player ${this.name} is not in penalty box`)
+
+      this.move(roll);
+
+      questions.askQuestion(this.board.getCategory(this.place));
+    }
+  }
+
+  wasCorrectlyAnswered() {
+    console.log(`Player ${this.name} answered correctly`)
+
+    if(this.isInPenaltyBox) {
+      console.log(`Player ${this.name} is in penalty box`)
+
+      if(this.isGettingOutOfPenaltyBox) {
+        this.moveOutOfPenaltyBox();
+        this.givePoint()
+
+        console.log(`Player ${this.name} is getting out of penalty box`)
+        return this.isWinning();
+
+      } else {
+        console.log(`Player ${this.name} in penalty box, switch player`)
+        return false;
+      }
+    } else {
+      this.givePoint();
+
+      return this.isWinning();
+
+    }
+  }
+
+  hasWronglyAnswered() {
+    console.log(`Player ${this.name} answered wrong`)
+    this.moveToPenaltyBox();
+    console.log(`Player ${this.name} is in penalty box`)
+
+    return true;
   }
 }
